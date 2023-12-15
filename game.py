@@ -1,9 +1,13 @@
 from parameters import *
-
+from tetromino import Tetronimo
 class Game:
     def __init__(self) -> None:
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
         self.display_surface = pygame.display.get_surface()
+
+        self.rect = self.surface.get_rect(topleft=(2 * WINDOW_PADDING + LEFT_SIDEBAR_WIDTH, WINDOW_PADDING))
+        self.sprites = pygame.sprite.Group()
+        self.tetromino = Tetronimo('T', self.sprites)
 
     def draw_game_grid(self) -> None:
         for column in range(1, COLUMNS):
@@ -20,7 +24,9 @@ class Game:
     
 
     def run(self) -> None:
+        self.sprites.draw(self.surface)
         self.draw_game_grid()
+
         self.display_surface.blit(self.surface, (2 * WINDOW_PADDING + LEFT_SIDEBAR_WIDTH, WINDOW_PADDING))
         self.surface.fill(COLORS['GAME_BACKGROUND'])
 
