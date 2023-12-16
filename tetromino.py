@@ -6,3 +6,7 @@ class Tetronimo():
         self.block_positions = TETROMINOS[shape]['shape']
         self.color = TETROMINOS[shape]['color']
         self.blocks = [Block(group, pygame.Vector2(pos), self.color) for pos in self.block_positions]
+    
+    def move_down(self) -> None:
+        for block in self.blocks:
+            block.move_down()

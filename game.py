@@ -1,5 +1,7 @@
 from parameters import *
 from tetromino import Tetronimo
+from timer import Timer
+
 class Game:
     def __init__(self) -> None:
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
@@ -8,6 +10,11 @@ class Game:
         self.rect = self.surface.get_rect(topleft=(2 * WINDOW_PADDING + LEFT_SIDEBAR_WIDTH, WINDOW_PADDING))
         self.sprites = pygame.sprite.Group()
         self.tetromino = Tetronimo('T', self.sprites)
+
+        self.timers = {
+            'VERTICAL_MOVE' : Timer(400, True, self.move_down)
+        } 
+        self.timers['VERTICAL_MOVE'].activate()
 
     def draw_game_grid(self) -> None:
         for column in range(1, COLUMNS):
@@ -22,8 +29,17 @@ class Game:
             pygame.draw.line(self.surface, COLORS['GAME_LINE_COLOR'],
                             start_pos=(j, i), end_pos=(self.surface.get_width(), i), width=1)
     
+    def move_down(self) -> None:
+        self.tetromino.move_down()
+    
+    def update_timer(self) -> None:
+        for timer in self.timers.values():
+            timer.update()
 
     def run(self) -> None:
+        self.update_timer()
+        self.sprites.update()
+        
         self.sprites.draw(self.surface)
         self.draw_game_grid()
 

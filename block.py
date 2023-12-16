@@ -8,6 +8,10 @@ class Block(pygame.sprite.Sprite):
         self.image.fill(color)
 
         self.pos = pos + BLOCK_OFFSET_POSITION
-        x = self.pos.x * CELL_SIZE
-        y = self.pos.y * CELL_SIZE
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.rect = self.image.get_rect(topleft=self.pos * CELL_SIZE)
+    
+    def move_down(self) -> None:
+        self.pos.y += 1
+    
+    def update(self) -> None:
+        self.rect.topleft = self.pos * CELL_SIZE
