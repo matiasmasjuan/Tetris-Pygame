@@ -13,5 +13,8 @@ class Block(pygame.sprite.Sprite):
     def move_down(self) -> None:
         self.pos.y += 1
     
+    def move_horizontal(self, x: int) -> None:
+        self.pos.x += x
+    
     def update(self) -> None:
         self.rect.topleft = self.pos * CELL_SIZE

@@ -10,3 +10,7 @@ class Tetronimo():
     def move_down(self) -> None:
         for block in self.blocks:
             block.move_down()
+    
+    def move_horizontal(self, x: int) -> None:
+        for block in self.blocks:
+            block.move_horizontal(x)
