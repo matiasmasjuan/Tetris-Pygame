@@ -21,13 +21,17 @@ class Tetromino():
             for block in self.blocks:
                 block.move_horizontal(x)
 
-    def move_down(self, create_new_tetromino: callable) -> None:
+    def move_down(self, create_new_tetromino: callable) -> bool:
         if not self.move_vertical_collide():
             for block in self.blocks:
                 block.move_down()
+            return True
+        
         else:
             for block in self.blocks:
                 self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
-            
+                
             create_new_tetromino()
+            return False
+
 

@@ -17,7 +17,8 @@ class Game:
         self.timers = {
             'VERTICAL_MOVE' : Timer(SPEED, True, self.move_down),
             'HORIZONTAL_MOVE': Timer(HORIZONTAL_MOVE_WAIT_TIME),
-            'SOFT_DROP': Timer(SOFT_DROP_WAIT_TIME)
+            'SOFT_DROP': Timer(SOFT_DROP_WAIT_TIME),
+            'HARD_DROP': Timer(HARD_DROP_WAIT_TIME)
         } 
         self.timers['VERTICAL_MOVE'].activate()
 
@@ -50,6 +51,13 @@ class Game:
             if  keys[pygame.K_DOWN]:
                 self.move_down()
                 self.timers['SOFT_DROP'].activate()
+        
+        if not self.timers['HARD_DROP'].active:
+            if keys[pygame.K_SPACE]:
+                while self.move_down():
+                    continue
+                self.timers['HARD_DROP'].activate()
+        
 
     def create_new_tetromino(self) -> None:
         self.check_fininshed_rows()
@@ -82,8 +90,8 @@ class Game:
 
 
 
-    def move_down(self) -> None:
-        self.tetromino.move_down(self.create_new_tetromino)
+    def move_down(self) -> bool:
+        return self.tetromino.move_down(self.create_new_tetromino)
     
     def update_timer(self) -> None:
         for timer in self.timers.values():
