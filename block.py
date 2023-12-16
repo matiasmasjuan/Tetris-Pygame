@@ -15,6 +15,14 @@ class Block(pygame.sprite.Sprite):
     
     def move_horizontal(self, x: int) -> None:
         self.pos.x += x
+
+    def check_horizontal_collide(self, x) -> bool:
+        new_position = self.pos.x + x
+        return new_position >= COLUMNS or new_position < 0
+
+    def check_vertical_collide(self) -> bool:
+        new_position = self.pos.y + 1
+        return new_position >= ROWS
     
     def update(self) -> None:
         self.rect.topleft = self.pos * CELL_SIZE
