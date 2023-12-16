@@ -1,13 +1,12 @@
 from parameters import *
 from block import Block
 class Tetromino():
-    def __init__(self, shape: str, group: pygame.sprite.Group, field_matrix: list[list[int]]) -> None:
+    def __init__(self, shape: str, group: pygame.sprite.Group, field_matrix: list[list[Block]]) -> None:
 
         self.block_positions = TETROMINOS[shape]['shape']
         self.color = TETROMINOS[shape]['color']
         self.blocks = [Block(group, pygame.Vector2(pos), self.color) for pos in self.block_positions]
         self.field_matrix = field_matrix
-        print(self.field_matrix)
     
     def move_horizontal_collide(self, x: int) -> bool:
         collisions = set(block.check_horizontal_collide(x, self.field_matrix) for block in self.blocks)
@@ -28,6 +27,7 @@ class Tetromino():
                 block.move_down()
         else:
             for block in self.blocks:
-                self.field_matrix[int(block.pos.y)][int(block.pos.x)] = 1
+                self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
+            
             create_new_tetromino()
 

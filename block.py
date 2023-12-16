@@ -21,14 +21,14 @@ class Block(pygame.sprite.Sprite):
         if new_position >= COLUMNS or new_position < 0:
             return True
         
-        return field_matrix[int(self.pos.y)][int(new_position)]
+        return field_matrix[int(self.pos.y)][int(new_position)] != 0
 
-    def check_vertical_collide(self, field_matrix: list[list[int]]) -> bool:
+    def check_vertical_collide(self, field_matrix: list[list[type['Block']]]) -> bool:
         new_position = self.pos.y + 1
         if new_position >= ROWS:
             return True
         
-        return new_position >= 0 and field_matrix[int(new_position)][int(self.pos.x)]
+        return new_position >= 0 and field_matrix[int(new_position)][int(self.pos.x)] != 0
     
     def update(self) -> None:
         self.rect.topleft = self.pos * CELL_SIZE

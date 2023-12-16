@@ -46,11 +46,35 @@ class Game:
                 self.timers['HORIZONTAL_MOVE'].activate()
 
     def create_new_tetromino(self) -> None:
+        self.check_fininshed_rows()
         self.tetromino = Tetromino(
             random.choice(list(TETROMINOS.keys())),
             self.sprites,
             self.field_matrix
         )
+    
+    def check_fininshed_rows(self) -> None:
+        clear_rows = []
+        for i, row in enumerate(self.field_matrix):
+            if all(row):
+                clear_rows.append(i)
+
+        if clear_rows:
+            for y in clear_rows:
+                for block in self.field_matrix[y]:
+                    block.kill()
+            
+                for row in self.field_matrix:
+                    for block in row:
+                        if block != 0 and block.pos.y < y:
+                            block.move_down()
+            
+            self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
+            for block in self.sprites:
+                self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
+            
+
+
 
     def move_down(self) -> None:
         self.tetromino.move_down(self.create_new_tetromino)
