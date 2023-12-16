@@ -1,6 +1,7 @@
 from parameters import *
-from tetromino import Tetronimo
+from tetromino import Tetromino
 from timer import Timer
+import random
 
 class Game:
     def __init__(self) -> None:
@@ -9,7 +10,9 @@ class Game:
 
         self.rect = self.surface.get_rect(topleft=(2 * WINDOW_PADDING + LEFT_SIDEBAR_WIDTH, WINDOW_PADDING))
         self.sprites = pygame.sprite.Group()
-        self.tetromino = Tetronimo('T', self.sprites)
+
+        self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
+        self.create_new_tetromino()
 
         self.timers = {
             'VERTICAL_MOVE' : Timer(SPEED, True, self.move_down),
@@ -42,8 +45,15 @@ class Game:
                 self.tetromino.move_horizontal(1)
                 self.timers['HORIZONTAL_MOVE'].activate()
 
+    def create_new_tetromino(self) -> None:
+        self.tetromino = Tetromino(
+            random.choice(list(TETROMINOS.keys())),
+            self.sprites,
+            self.field_matrix
+        )
+
     def move_down(self) -> None:
-        self.tetromino.move_down()
+        self.tetromino.move_down(self.create_new_tetromino)
     
     def update_timer(self) -> None:
         for timer in self.timers.values():
