@@ -15,10 +15,12 @@ class Game:
         self.get_next_shape = get_next_shape
         self.create_new_tetromino()
 
+        self.down_speed = SPEED
+        self.down_speed_faster = self.down_speed * 0.3
+        self.down_pressed = False
         self.timers = {
-            'VERTICAL_MOVE' : Timer(SPEED, True, self.move_down),
+            'VERTICAL_MOVE' : Timer(self.down_speed, True, self.move_down),
             'HORIZONTAL_MOVE': Timer(HORIZONTAL_MOVE_WAIT_TIME),
-            'SOFT_DROP': Timer(SOFT_DROP_WAIT_TIME),
             'HARD_DROP': Timer(HARD_DROP_WAIT_TIME),
             'ROTATE': Timer(ROTATE_WAIT_TIME),
         } 
@@ -58,10 +60,14 @@ class Game:
                 self.tetromino.rotate(90)
                 self.timers['ROTATE'].activate()
         
-        if not self.timers['SOFT_DROP'].active:
-            if  keys[pygame.K_DOWN]:
-                self.move_down()
-                self.timers['SOFT_DROP'].activate()
+        if not self.down_pressed and keys[pygame.K_DOWN]:
+            self.down_pressed = True
+            self.timers['VERTICAL_MOVE'].duration = self.down_speed_faster
+
+        if self.down_pressed and not keys[pygame.K_DOWN]:
+            self.down_pressed = False
+            self.timers['VERTICAL_MOVE'].duration = self.down_speed
+
         
         if not self.timers['HARD_DROP'].active:
             if keys[pygame.K_SPACE]:
