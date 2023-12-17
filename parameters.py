@@ -41,11 +41,11 @@ COLORS = {
 }
 
 TETROMINOS = {
-	'I': {'shape': [(0,0), (0,-1), (0,-2), (0,1)], 'color': COLORS['LIGHT_BLUE']},
-	'J': {'shape': [(0,0), (0,-1), (0,1), (-1,1)], 'color': COLORS['DARK_BLUE']},
-	'L': {'shape': [(0,0), (0,-1), (0,1), (1,1)], 'color': COLORS['ORANGE']},
+	'I': {'shape': [(0,0), (1,0), (2,0), (-1,0)], 'color': COLORS['LIGHT_BLUE']},
+	'J': {'shape': [(0,0), (-1,0), (-1,-1), (1,0)], 'color': COLORS['DARK_BLUE']},
+	'L': {'shape': [(0,0), (1,0), (1,-1), (-1,0)], 'color': COLORS['ORANGE']},
 	'O': {'shape': [(0,0), (0,-1), (1,0), (1,-1)], 'color': COLORS['YELLOW']},
 	'S': {'shape': [(0,0), (-1,0), (0,-1), (1,-1)], 'color': COLORS['GREEN']},
-	'Z': {'shape': [(0,0), (1,0), (0,-1), (-1,-1)], 'color': COLORS['RED']},
-	'T': {'shape': [(0,0), (-1,0), (1,0), (0,-1)], 'color': COLORS['MAGENTA']}
+	'T': {'shape': [(0,0), (-1,0), (1,0), (0,-1)], 'color': COLORS['MAGENTA']},
+	'Z': {'shape': [(0,0), (1,0), (0,-1), (-1,-1)], 'color': COLORS['RED']}
 }
