@@ -18,7 +18,8 @@ class Game:
             'VERTICAL_MOVE' : Timer(SPEED, True, self.move_down),
             'HORIZONTAL_MOVE': Timer(HORIZONTAL_MOVE_WAIT_TIME),
             'SOFT_DROP': Timer(SOFT_DROP_WAIT_TIME),
-            'HARD_DROP': Timer(HARD_DROP_WAIT_TIME)
+            'HARD_DROP': Timer(HARD_DROP_WAIT_TIME),
+            'ROTATE': Timer(ROTATE_WAIT_TIME),
         } 
         self.timers['VERTICAL_MOVE'].activate()
 
@@ -46,6 +47,15 @@ class Game:
             elif keys[pygame.K_RIGHT]:
                 self.tetromino.move_horizontal(1)
                 self.timers['HORIZONTAL_MOVE'].activate()
+        
+        if not self.timers['ROTATE'].active:
+            if keys[pygame.K_UP]:
+                self.tetromino.rotate(270)
+                self.timers['ROTATE'].activate()
+
+            elif keys[pygame.K_LCTRL] or keys[pygame.K_z]:
+                self.tetromino.rotate(90)
+                self.timers['ROTATE'].activate()
         
         if not self.timers['SOFT_DROP'].active:
             if  keys[pygame.K_DOWN]:
