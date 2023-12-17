@@ -4,7 +4,7 @@ from timer import Timer
 import random
 
 class Game:
-    def __init__(self) -> None:
+    def __init__(self, get_next_shape: callable) -> None:
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
         self.display_surface = pygame.display.get_surface()
 
@@ -12,7 +12,7 @@ class Game:
         self.sprites = pygame.sprite.Group()
 
         self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
-        self.next_shapes = self.generate_random_bag()
+        self.get_next_shape = get_next_shape
         self.create_new_tetromino()
 
         self.timers = {
@@ -69,16 +69,10 @@ class Game:
                     continue
                 self.timers['HARD_DROP'].activate()
         
-    def generate_random_bag(self) -> list[str]:
-        new_shapes = list(TETROMINOS.keys())
-        random.shuffle(new_shapes)
-        return new_shapes
 
     def create_new_tetromino(self) -> None:
         self.check_fininshed_rows()
-        next_shape = self.next_shapes.pop(0)
-        if len(self.next_shapes) == 3:
-            self.next_shapes.extend(self.generate_random_bag())
+        next_shape = self.get_next_shape()
         
         self.tetromino = Tetromino(
             next_shape,
