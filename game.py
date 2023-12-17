@@ -12,6 +12,7 @@ class Game:
         self.sprites = pygame.sprite.Group()
 
         self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
+        self.next_shapes = self.generate_random_bag()
         self.create_new_tetromino()
 
         self.timers = {
@@ -68,11 +69,19 @@ class Game:
                     continue
                 self.timers['HARD_DROP'].activate()
         
+    def generate_random_bag(self) -> list[str]:
+        new_shapes = list(TETROMINOS.keys())
+        random.shuffle(new_shapes)
+        return new_shapes
 
     def create_new_tetromino(self) -> None:
         self.check_fininshed_rows()
+        next_shape = self.next_shapes.pop(0)
+        if len(self.next_shapes) == 3:
+            self.next_shapes.extend(self.generate_random_bag())
+        
         self.tetromino = Tetromino(
-            random.choice(list(TETROMINOS.keys())),
+            next_shape,
             self.sprites,
             self.field_matrix
         )
