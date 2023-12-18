@@ -4,15 +4,18 @@ from timer import Timer
 import random
 
 class Game:
-    def __init__(self, get_next_shape: callable, update_score: callable) -> None:
+    def __init__(self, get_next_shape: callable, update_score: callable, game_over: callable) -> None:
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
         self.display_surface = pygame.display.get_surface()
 
         self.rect = self.surface.get_rect(topleft=(2 * WINDOW_PADDING + LEFT_SIDEBAR_WIDTH, WINDOW_PADDING))
         self.sprites = pygame.sprite.Group()
 
+        self.game_over = game_over
+
         self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
         self.get_next_shape = get_next_shape
+        self.tetromino = None
         self.create_new_tetromino()
 
         self.update_score = update_score
@@ -21,7 +24,7 @@ class Game:
         self.current_lines = 0
 
         self.down_speed = 0 
-        self.down_speed_faster = self.down_speed * 0.3
+        self.down_speed_faster = self.down_speed * FAST_SPEED_MULTIPLIER
         self.down_pressed = False
         self.timers = {
             'VERTICAL_MOVE' : Timer(self.down_speed, True, self.move_down),
@@ -36,7 +39,7 @@ class Game:
     def calculate_down_speed(self) -> None:
         down_speed_in_seconds = (0.8 - ((self.current_level - 1) * 0.007)) ** (self.current_level - 1)
         self.down_speed = down_speed_in_seconds * 1000
-        self.down_speed_faster = self.down_speed * 0.3
+        self.down_speed_faster = self.down_speed * FAST_SPEED_MULTIPLIER
         self.timers['VERTICAL_MOVE'].duration = self.down_speed
 
     def calculate_score(self, num_lines):
@@ -99,6 +102,7 @@ class Game:
         
 
     def create_new_tetromino(self) -> None:
+        self.check_game_over()
         self.check_fininshed_rows()
         next_shape = self.get_next_shape()
         
@@ -107,7 +111,13 @@ class Game:
             self.sprites,
             self.field_matrix
         )
-    
+
+    def check_game_over(self) -> None:
+        if self.tetromino:
+            for block in self.tetromino.blocks:
+                if block.pos.y < 0:
+                    self.game_over()
+
     def check_fininshed_rows(self) -> None:
         clear_rows = []
         for i, row in enumerate(self.field_matrix):

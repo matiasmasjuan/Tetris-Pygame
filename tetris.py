@@ -16,7 +16,7 @@ class Tetris:
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
 
-        self.game = Game(self.get_next_shape, self.update_score)
+        self.game = Game(self.get_next_shape, self.update_score, self.game_over)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
@@ -36,6 +36,36 @@ class Tetris:
         self.score.level = level
         self.score.score = score
         self.score.lines = lines
+    
+    def game_over(self):
+        game_over_text = pygame.font.Font(FONT_PATH, FONT_SIZE).render(
+            TEXTS['GAME_OVER'], True, COLORS['TEXT'])
+        game_over_rect = game_over_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
+        
+        self.display_surface.fill(COLORS['GAME_OVER_BACKGROUND'])
+        self.display_surface.blit(game_over_text, game_over_rect)
+        pygame.display.flip()
+
+        waiting_for_restart = True
+        while waiting_for_restart:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        waiting_for_restart = False
+        self.restart()
+        
+    def restart(self) -> None:
+        self.current_shapes = self.generate_random_bag()
+        self.next_shapes = self.get_next_shape()
+
+        self.game = Game(self.get_next_shape, self.update_score, self.game_over)
+        self.score = Score()
+        self.holder = Holder()
+        self.sequence = Sequence()
+        self.run()
 
     def run(self) -> None:
         while True:
