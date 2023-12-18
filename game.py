@@ -4,7 +4,7 @@ from timer import Timer
 import random
 
 class Game:
-    def __init__(self, get_next_shape: callable) -> None:
+    def __init__(self, get_next_shape: callable, update_score: callable) -> None:
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
         self.display_surface = pygame.display.get_surface()
 
@@ -25,6 +25,24 @@ class Game:
             'ROTATE': Timer(ROTATE_WAIT_TIME),
         } 
         self.timers['VERTICAL_MOVE'].activate()
+
+        self.update_score = update_score
+        self.current_level = 1
+        self.current_score = 0
+        self.current_lines = 0
+
+    def calculate_score(self, num_lines):
+        self.current_lines += num_lines
+        self.current_score += 10
+
+        if self.current_lines / 10 > self.current_level:
+            self.current_level += 1
+            self.down_speed *= 0.75
+            self.down_speed_faster = self.down_speed * 0.3
+            self.timers['vertical move'].duration = self.down_speed
+			
+        self.update_score(self.current_level, self.current_score, self.current_lines)
+
 
     def draw_game_grid(self) -> None:
         for column in range(1, COLUMNS):
@@ -105,6 +123,8 @@ class Game:
             self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
             for block in self.sprites:
                 self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
+            
+            self.calculate_score(len(clear_rows))
             
 
 

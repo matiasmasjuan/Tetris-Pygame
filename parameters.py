@@ -1,4 +1,5 @@
 import pygame
+import os
 
 ROWS = 20
 COLUMNS = 10
@@ -25,6 +26,15 @@ HARD_DROP_WAIT_TIME = 300
 ROTATE_WAIT_TIME = 200
 SPEED = 200
 
+FONT_PATH = os.path.join('fonts', 'Russo_One.ttf')
+FONT_SIZE = 30
+
+TEXTS = {
+    'SCORE': 'Puntaje',
+    'LEVEL': 'Nivel',
+    'LINES': 'Filas'
+}   
+
 COLORS = {
     'WINDOW_BACKGROUND': '#526375',
     'GAME_BACKGROUND': '#12151a',
@@ -33,6 +43,7 @@ COLORS = {
     'SEQUENCE_BACKGROUND': '#89708a',
     'GAME_LINE_COLOR': '#666666',
     'BORDER_COLOR': '#ffffff',
+    'TEXT': '#ffffff',
     'LIGHT_BLUE': '#00d9ff',
     'DARK_BLUE': '#1200b8',
     'ORANGE': '#ff8800',

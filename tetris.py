@@ -16,7 +16,7 @@ class Tetris:
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
 
-        self.game = Game(self.get_next_shape)
+        self.game = Game(self.get_next_shape, self.update_score)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
@@ -31,6 +31,11 @@ class Tetris:
         if len(self.current_shapes) == 3:
             self.current_shapes.extend(self.generate_random_bag())
         return next_shape
+
+    def update_score(self, level: int, score: int, lines: int) -> None:
+        self.score.level = level
+        self.score.score = score
+        self.score.lines = lines
 
     def run(self) -> None:
         while True:
