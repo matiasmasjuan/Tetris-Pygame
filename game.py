@@ -121,8 +121,7 @@ class Game:
         
         if not self.timers['HARD_DROP'].active:
             if keys[pygame.K_SPACE]:
-                while self.move_down():
-                    continue
+                self.hard_drop()
                 self.timers['HARD_DROP'].activate()
         
     def handle_hold_tetromino(self) -> None:
@@ -179,7 +178,13 @@ class Game:
             self.update_score(self.current_level, self.current_score, self.current_lines, self.combo)
 
     def move_down(self) -> bool:
-        return self.tetromino.move_down(self.create_new_tetromino)
+        if self.tetromino.move_down(self.create_new_tetromino):
+            if self.down_pressed:
+                self.current_score += SOFT_DROP_SCORE
+            self.update_score(self.current_level, self.current_score, self.current_lines, self.combo)
+            return True
+        
+        return False
     
     def move_horizontal(self, x: int) -> None:
         self.tetromino.move_horizontal(x)
@@ -187,6 +192,17 @@ class Game:
     def rotate(self, degrees: int) -> None:
         self.tetromino.rotate(degrees)
     
+    def hard_drop(self) -> None:
+        row_counter = 0
+        while True:
+            if self.tetromino.move_down(self.create_new_tetromino):
+                row_counter += 1
+            else:
+                break
+        self.current_score += HARD_DROP_MULTIPLIER * row_counter
+        self.update_score(self.current_level, self.current_score, self.current_lines, self.combo)
+
+
     def update_timer(self) -> None:
         for timer in self.timers.values():
             timer.update()
