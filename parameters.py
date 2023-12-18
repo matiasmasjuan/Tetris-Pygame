@@ -29,6 +29,9 @@ FAST_SPEED_MULTIPLIER = 0.15
 FONT_PATH = os.path.join('fonts', 'Russo_One.ttf')
 FONT_SIZE = 30
 
+MUSIC_PATH = os.path.join('sound', 'music.wav')
+MUSIC_VOLUME = 0.1
+
 TEXTS = {
     'SCORE': 'Puntaje',
     'LEVEL': 'Nivel',

@@ -22,6 +22,10 @@ class Tetris:
         self.holder = Holder()
         self.sequence = Sequence()
 
+        self.music = pygame.mixer.Sound(MUSIC_PATH)
+        self.music.set_volume(MUSIC_VOLUME)
+        self.music.play(-1)
+
     def generate_random_bag(self) -> list[str]:
         new_shapes = list(TETROMINOS.keys())
         random.shuffle(new_shapes)
@@ -42,6 +46,7 @@ class Tetris:
         self.score.lines = lines
     
     def game_over(self):
+        self.music.stop()
         game_over_text = pygame.font.Font(FONT_PATH, FONT_SIZE).render(
             TEXTS['GAME_OVER'], True, COLORS['TEXT'])
         game_over_rect = game_over_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
@@ -70,6 +75,8 @@ class Tetris:
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
+        
+        self.music.play(-1)
         self.run()
 
     def run(self) -> None:
