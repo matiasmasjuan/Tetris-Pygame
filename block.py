@@ -26,7 +26,7 @@ class Block(pygame.sprite.Sprite):
         return field_matrix[int(self.pos.y)][new_pos_x] != 0
 
     def check_vertical_collide(self, new_pos_y: int, field_matrix: list[list[type['Block']]]) -> bool:
-        if new_pos_y >= ROWS:
+        if new_pos_y >= ROWS or new_pos_y < 0:
             return True
         
         return new_pos_y >= 0 and field_matrix[new_pos_y][int(self.pos.x)] != 0

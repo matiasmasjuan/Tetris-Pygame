@@ -69,20 +69,20 @@ class Game:
 
         if not self.timers['HORIZONTAL_MOVE'].active:
             if keys[pygame.K_LEFT]:
-                self.tetromino.move_horizontal(-1)
+                self.move_horizontal(-1)
                 self.timers['HORIZONTAL_MOVE'].activate()
 
             elif keys[pygame.K_RIGHT]:
-                self.tetromino.move_horizontal(1)
+                self.move_horizontal(1)
                 self.timers['HORIZONTAL_MOVE'].activate()
         
         if not self.timers['ROTATE'].active:
             if keys[pygame.K_UP]:
-                self.tetromino.rotate(270)
+                self.rotate(-90)
                 self.timers['ROTATE'].activate()
 
             elif keys[pygame.K_LCTRL] or keys[pygame.K_z]:
-                self.tetromino.rotate(90)
+                self.rotate(90)
                 self.timers['ROTATE'].activate()
         
         if not self.down_pressed and keys[pygame.K_DOWN]:
@@ -105,17 +105,12 @@ class Game:
         self.check_game_over()
         self.check_fininshed_rows()
         next_shape = self.get_next_shape()
-        
-        self.tetromino = Tetromino(
-            next_shape,
-            self.sprites,
-            self.field_matrix
-        )
+        self.tetromino = Tetromino(next_shape, self.sprites, self.field_matrix)
 
     def check_game_over(self) -> None:
         if self.tetromino:
             for block in self.tetromino.blocks:
-                if block.pos.y < 0:
+                if block.pos.y <= 0:
                     self.game_over()
 
     def check_fininshed_rows(self) -> None:
@@ -139,12 +134,15 @@ class Game:
                 self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
             
             self.calculate_score(len(clear_rows))
-            
-
-
 
     def move_down(self) -> bool:
         return self.tetromino.move_down(self.create_new_tetromino)
+    
+    def move_horizontal(self, x: int) -> None:
+        self.tetromino.move_horizontal(x)
+    
+    def rotate(self, degrees: int) -> None:
+        self.tetromino.rotate(degrees)
     
     def update_timer(self) -> None:
         for timer in self.timers.values():
