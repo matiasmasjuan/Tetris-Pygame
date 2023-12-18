@@ -21,12 +21,14 @@ class Game:
         self.field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
         self.get_next_shape = get_next_shape
         self.tetromino = None
-        self.create_new_tetromino()
 
         self.update_score = update_score
         self.current_level = 1
         self.current_score = 0
         self.current_lines = 0
+        self.combo = 0
+
+        self.create_new_tetromino()
 
         self.holded = False
         self.holded_shape = None
@@ -51,14 +53,25 @@ class Game:
         self.down_speed_faster = self.down_speed * FAST_SPEED_MULTIPLIER
         self.timers['VERTICAL_MOVE'].duration = self.down_speed
 
+    def is_perfect_clear(self) -> bool:
+        clear_field_matrix = [[0 for _ in range(COLUMNS)] for _ in range(ROWS)]
+        return self.field_matrix == clear_field_matrix
+
     def calculate_score(self, num_lines):
+        if self.is_perfect_clear():
+            self.current_score += PERFECT_SCORES[num_lines] * self.current_level
+        else:
+            self.current_score += SCORES[num_lines] * self.current_level
+
         self.current_lines += num_lines
-        self.current_score += 10
+        self.current_score += COMBO_MULTIPLIER * self.combo * self.current_level
+        self.combo += num_lines
 
         if self.current_lines / 10 > self.current_level:
             self.current_level += 1
             self.calculate_down_speed()
-        self.update_score(self.current_level, self.current_score, self.current_lines)
+
+        self.update_score(self.current_level, self.current_score, self.current_lines, self.combo)
 
     def draw_game_grid(self) -> None:
         for column in range(1, COLUMNS):
@@ -160,6 +173,10 @@ class Game:
                 self.field_matrix[int(block.pos.y)][int(block.pos.x)] = block
             
             self.calculate_score(len(clear_rows))
+
+        else:
+            self.combo = 0
+            self.update_score(self.current_level, self.current_score, self.current_lines, self.combo)
 
     def move_down(self) -> bool:
         return self.tetromino.move_down(self.create_new_tetromino)

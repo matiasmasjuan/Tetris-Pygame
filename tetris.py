@@ -17,10 +17,10 @@ class Tetris:
         self.next_shapes = self.get_next_shape()
         self.holded_piece = None
 
-        self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
+        self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
 
         self.music = pygame.mixer.Sound(MUSIC_PATH)
         self.music.set_volume(MUSIC_VOLUME)
@@ -28,6 +28,7 @@ class Tetris:
 
     def generate_random_bag(self) -> list[str]:
         new_shapes = list(TETROMINOS.keys())
+        # new_shapes = ['O' for _ in range(7)]
         random.shuffle(new_shapes)
         return new_shapes
 
@@ -40,10 +41,11 @@ class Tetris:
     def update_hold_piece(self, holded_piece: str) -> None:
         self.holded_piece = holded_piece
 
-    def update_score(self, level: int, score: int, lines: int) -> None:
+    def update_score(self, level: int, score: int, lines: int, combo: int) -> None:
         self.score.level = level
         self.score.score = score
         self.score.lines = lines
+        self.score.combo = combo
     
     def game_over(self):
         self.music.stop()
@@ -75,7 +77,7 @@ class Tetris:
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
-        
+
         self.music.play(-1)
         self.run()
 

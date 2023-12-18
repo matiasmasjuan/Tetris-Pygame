@@ -11,6 +11,7 @@ class Score:
         self.level = 1
         self.score = 0
         self.lines = 0
+        self.combo = 0
 
     def write_text(self, x:int, y: int, text: str) -> None:
         text_surface = self.font.render(f'{text[0]}: {text[1]}', True, COLORS['TEXT'])
@@ -18,7 +19,10 @@ class Score:
         self.surface.blit(text_surface, text_rext)
     
     def display_text(self) -> None:
-        data = [(TEXTS['LEVEL'], self.level), (TEXTS['SCORE'], self.score), (TEXTS['LINES'], self.lines)]
+        data = [(TEXTS['LEVEL'], self.level),
+                (TEXTS['SCORE'], self.score),
+                (TEXTS['LINES'], self.lines),
+                (TEXTS['COMBO'], self.combo)]
         for i, text in enumerate(data):
             x = self.surface.get_width() // 2
             y = self.surface.get_width() // 2 + i * (self.surface.get_width() // 2 )

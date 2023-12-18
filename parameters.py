@@ -27,15 +27,22 @@ HOLD_WAIT_TIME = 300
 FAST_SPEED_MULTIPLIER = 0.15
 
 FONT_PATH = os.path.join('fonts', 'Russo_One.ttf')
-FONT_SIZE = 30
+FONT_SIZE = 25
 
 MUSIC_PATH = os.path.join('sound', 'music.wav')
 MUSIC_VOLUME = 0.1
+
+SCORES = {1: 100, 2: 300, 3: 500, 4: 800}
+PERFECT_SCORES = {1: 800, 2: 1200, 3: 1800, 4: 2000}
+COMBO_MULTIPLIER = 55
+SOFT_DROP_SCORE = 1
+HARD_DROP_MULTIPLIER: 2
 
 TEXTS = {
     'SCORE': 'Puntaje',
     'LEVEL': 'Nivel',
     'LINES': 'Filas',
+    'COMBO': 'Combo',
     'GAME_OVER': 'Game Over'
 }   
 
