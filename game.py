@@ -15,7 +15,12 @@ class Game:
         self.get_next_shape = get_next_shape
         self.create_new_tetromino()
 
-        self.down_speed = SPEED
+        self.update_score = update_score
+        self.current_level = 1
+        self.current_score = 0
+        self.current_lines = 0
+
+        self.down_speed = 0 
         self.down_speed_faster = self.down_speed * 0.3
         self.down_pressed = False
         self.timers = {
@@ -23,13 +28,16 @@ class Game:
             'HORIZONTAL_MOVE': Timer(HORIZONTAL_MOVE_WAIT_TIME),
             'HARD_DROP': Timer(HARD_DROP_WAIT_TIME),
             'ROTATE': Timer(ROTATE_WAIT_TIME),
-        } 
+        }
+        self.calculate_down_speed()
+        
         self.timers['VERTICAL_MOVE'].activate()
 
-        self.update_score = update_score
-        self.current_level = 1
-        self.current_score = 0
-        self.current_lines = 0
+    def calculate_down_speed(self) -> None:
+        down_speed_in_seconds = (0.8 - ((self.current_level - 1) * 0.007)) ** (self.current_level - 1)
+        self.down_speed = down_speed_in_seconds * 1000
+        self.down_speed_faster = self.down_speed * 0.3
+        self.timers['VERTICAL_MOVE'].duration = self.down_speed
 
     def calculate_score(self, num_lines):
         self.current_lines += num_lines
@@ -37,12 +45,8 @@ class Game:
 
         if self.current_lines / 10 > self.current_level:
             self.current_level += 1
-            self.down_speed *= 0.75
-            self.down_speed_faster = self.down_speed * 0.3
-            self.timers['vertical move'].duration = self.down_speed
-			
+            self.calculate_down_speed()
         self.update_score(self.current_level, self.current_score, self.current_lines)
-
 
     def draw_game_grid(self) -> None:
         for column in range(1, COLUMNS):
