@@ -66,6 +66,13 @@ class Tetromino():
                 for i, block in enumerate(self.blocks):
                     block.pos = new_block_positions[i]
                 self.recalculate_shadow_blocks_positions()
+    
+    def kill(self) -> None:
+        for block, shadow in zip(self.blocks, self.shadow):
+            block.kill()
+            shadow.kill()
+            self.field_matrix[int(block.pos.y)][int(block.pos.x)] = 0
+
 
 
 

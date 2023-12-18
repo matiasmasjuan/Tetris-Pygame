@@ -15,8 +15,9 @@ class Tetris:
 
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
+        self.holded_piece = None
 
-        self.game = Game(self.get_next_shape, self.update_score, self.game_over)
+        self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
@@ -31,6 +32,9 @@ class Tetris:
         if len(self.current_shapes) == 3:
             self.current_shapes.extend(self.generate_random_bag())
         return next_shape
+    
+    def update_hold_piece(self, holded_piece: str) -> None:
+        self.holded_piece = holded_piece
 
     def update_score(self, level: int, score: int, lines: int) -> None:
         self.score.level = level
@@ -60,8 +64,9 @@ class Tetris:
     def restart(self) -> None:
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
+        self.holded_piece = None
 
-        self.game = Game(self.get_next_shape, self.update_score, self.game_over)
+        self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
@@ -78,7 +83,7 @@ class Tetris:
 
             self.game.run()
             self.score.run()
-            self.holder.run()
+            self.holder.run(self.holded_piece)
             self.sequence.run(self.current_shapes)
 
             pygame.display.update()

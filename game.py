@@ -1,10 +1,15 @@
 from parameters import *
 from tetromino import Tetromino
 from timer import Timer
-import random
 
 class Game:
-    def __init__(self, get_next_shape: callable, update_score: callable, game_over: callable) -> None:
+    def __init__(self,
+                get_next_shape: callable,
+                update_score: callable,
+                game_over: callable, 
+                update_hold_piece: callable
+                ) -> None:
+        
         self.surface = pygame.Surface((GAME_WIDTH, GAME_HEIGHT))
         self.display_surface = pygame.display.get_surface()
 
@@ -23,6 +28,10 @@ class Game:
         self.current_score = 0
         self.current_lines = 0
 
+        self.holded = False
+        self.holded_shape = None
+        self.update_hold_piece = update_hold_piece
+
         self.down_speed = 0 
         self.down_speed_faster = self.down_speed * FAST_SPEED_MULTIPLIER
         self.down_pressed = False
@@ -31,9 +40,9 @@ class Game:
             'HORIZONTAL_MOVE': Timer(HORIZONTAL_MOVE_WAIT_TIME),
             'HARD_DROP': Timer(HARD_DROP_WAIT_TIME),
             'ROTATE': Timer(ROTATE_WAIT_TIME),
+            'HOLD': Timer(HOLD_WAIT_TIME),
         }
         self.calculate_down_speed()
-        
         self.timers['VERTICAL_MOVE'].activate()
 
     def calculate_down_speed(self) -> None:
@@ -92,7 +101,10 @@ class Game:
         if self.down_pressed and not keys[pygame.K_DOWN]:
             self.down_pressed = False
             self.timers['VERTICAL_MOVE'].duration = self.down_speed
-
+        
+        if not self.timers['HOLD'].active and not self.holded:
+            if keys[pygame.K_c] or keys[pygame.K_LSHIFT]:
+                self.handle_hold_tetromino()
         
         if not self.timers['HARD_DROP'].active:
             if keys[pygame.K_SPACE]:
@@ -100,13 +112,27 @@ class Game:
                     continue
                 self.timers['HARD_DROP'].activate()
         
+    def handle_hold_tetromino(self) -> None:
+        holded_shape = self.holded_shape
+        self.holded_shape = self.tetromino.shape
+        self.update_hold_piece(self.tetromino.shape)
+        self.tetromino.kill()
+        if not holded_shape:
+            self.tetromino = None
+            self.create_new_tetromino()
+        else:
+            self.tetromino = Tetromino(holded_shape, self.sprites, self.field_matrix)
+
+        self.holded = True
+        self.timers['HOLD'].activate()
 
     def create_new_tetromino(self) -> None:
         self.check_game_over()
         self.check_fininshed_rows()
         next_shape = self.get_next_shape()
         self.tetromino = Tetromino(next_shape, self.sprites, self.field_matrix)
-
+        self.holded = False
+        
     def check_game_over(self) -> None:
         if self.tetromino:
             for block in self.tetromino.blocks:
