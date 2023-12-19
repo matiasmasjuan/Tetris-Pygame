@@ -5,8 +5,7 @@ class Score:
         self.surface = pygame.Surface((LEFT_SIDEBAR_WIDTH, SCORE_HEIGHT))
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topleft=(WINDOW_PADDING, WINDOW_PADDING))
-
-        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
+        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
 
         self.level = 1
         self.score = 0
@@ -25,7 +24,7 @@ class Score:
                 (TEXTS['COMBO'], self.combo)]
         for i, text in enumerate(data):
             x = self.surface.get_width() // 2
-            y = self.surface.get_width() // 2 + i * (self.surface.get_width() // 2 )
+            y = self.surface.get_height() * 0.1 + i * (self.surface.get_height() // 6)
             self.write_text(x, y, text)
 
 

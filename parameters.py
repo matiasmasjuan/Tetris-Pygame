@@ -27,7 +27,7 @@ HOLD_WAIT_TIME = 300
 FAST_SPEED_MULTIPLIER = 0.15
 
 FONT_PATH = os.path.join('fonts', 'Russo_One.ttf')
-FONT_SIZE = 25
+FONT_SIZE = {'XL': 60, 'L': 30, 'M':20, 'S': 15}
 
 MUSIC_PATH = os.path.join('sound', 'music.wav')
 MUSIC_VOLUME = 0.1
@@ -43,15 +43,18 @@ TEXTS = {
     'LEVEL': 'Nivel',
     'LINES': 'Filas',
     'COMBO': 'Combo',
-    'GAME_OVER': 'Game Over'
+    'SEQUENCE': 'Siguiente',
+    'HOLDER': 'Almacenado',
+    'GAME_OVER': 'Game Over',
+    'RETRY': 'Pulse (r) para volver a jugar'
 }   
 
 COLORS = {
     'WINDOW_BACKGROUND': '#526375',
     'GAME_BACKGROUND': '#12151a',
-    'HOLDER_BACKGROUND': '#8a7073',
-    'SCORE_BACKGROUND': '#708a71',
-    'SEQUENCE_BACKGROUND': '#89708a',
+    'HOLDER_BACKGROUND': '#12151a',
+    'SCORE_BACKGROUND': '#12151a',
+    'SEQUENCE_BACKGROUND': '#12151a',
     'GAME_OVER_BACKGROUND': '#526375',
     'GAME_LINE_COLOR': '#666666',
     'BORDER_COLOR': '#ffffff',

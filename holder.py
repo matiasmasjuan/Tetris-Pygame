@@ -5,6 +5,7 @@ class Holder:
         self.surface = pygame.Surface((LEFT_SIDEBAR_WIDTH, HOLDER_HEIGHT))
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topleft=(WINDOW_PADDING, WINDOW_PADDING + SCORE_HEIGHT))
+        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
 
     def display_tetromino(self, shape: str) -> None:
         color = TETROMINOS[shape]['color']
@@ -26,9 +27,17 @@ class Holder:
                         start_pos=(x + CELL_SIZE, y), end_pos=(x + CELL_SIZE, y + CELL_SIZE), width=1)
         pygame.draw.line(self.surface, line_color,
                         start_pos=(x, y + CELL_SIZE), end_pos=(x + CELL_SIZE, y + CELL_SIZE), width=1)
+    
+    def display_text(self) -> None:
+        x = self.surface.get_width() * 0.5
+        y = self.surface.get_height() * 0.15
+        text_surface = self.font.render(TEXTS['HOLDER'], True, COLORS['TEXT'])
+        text_rext = text_surface.get_rect(center = (x, y))
+        self.surface.blit(text_surface, text_rext)
         
     def run(self, holded_piece: str | None) -> None:
         self.surface.fill(COLORS['HOLDER_BACKGROUND'])
+        self.display_text()
         if holded_piece:
             self.display_tetromino(holded_piece)
         self.display_surface.blit(self.surface, self.rect)

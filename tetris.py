@@ -26,9 +26,11 @@ class Tetris:
         self.music.set_volume(MUSIC_VOLUME)
         self.music.play(-1)
 
+        self.font_game_over = pygame.font.Font(FONT_PATH, FONT_SIZE['XL'])
+        self.font_retry = pygame.font.Font(FONT_PATH, FONT_SIZE['L'])
+
     def generate_random_bag(self) -> list[str]:
         new_shapes = list(TETROMINOS.keys())
-        # new_shapes = ['O' for _ in range(7)]
         random.shuffle(new_shapes)
         return new_shapes
 
@@ -47,14 +49,19 @@ class Tetris:
         self.score.lines = lines
         self.score.combo = combo
     
+    def display_game_over_text(self) -> None:
+        game_over_text = self.font_game_over.render(TEXTS['GAME_OVER'], True, COLORS['TEXT'])
+        retry_text = self.font_retry.render(TEXTS['RETRY'], True, COLORS['TEXT'])
+        game_over_rect = game_over_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT * (2/5)))
+        rery_rect = retry_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT * (3/5)))
+
+        self.display_surface.blit(game_over_text, game_over_rect)
+        self.display_surface.blit(retry_text, rery_rect)
+
     def game_over(self):
         self.music.stop()
-        game_over_text = pygame.font.Font(FONT_PATH, FONT_SIZE).render(
-            TEXTS['GAME_OVER'], True, COLORS['TEXT'])
-        game_over_rect = game_over_text.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
-        
         self.display_surface.fill(COLORS['GAME_OVER_BACKGROUND'])
-        self.display_surface.blit(game_over_text, game_over_rect)
+        self.display_game_over_text()
         pygame.display.flip()
 
         waiting_for_restart = True
