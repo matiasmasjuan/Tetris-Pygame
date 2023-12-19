@@ -5,7 +5,7 @@ class Sequence:
         self.surface = pygame.Surface((RIGHT_SIDEBAR_WIDTH, SEQUENCE_HEIGHT))
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topright=(WINDOW_WIDTH - WINDOW_PADDING, WINDOW_PADDING))
-        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
+        self.font = pygame.font.Font(FONT_PATH, GAME_FONT_SIZE)
 
     def display_tetrominos(self, shapes: list[str]) -> None:
         for i, shape in enumerate(shapes):

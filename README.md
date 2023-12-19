@@ -21,6 +21,15 @@ Para ejecutar el programa, basta con abrir una terminal desde el directorio prin
 python3 main.py
 ```
 
+## Importante ⚠️
+
+Este proyecto fue implemetado con una resolución de 2880 x 1800. Si se utiliza una resolución de menor tamaño, **es importante** ajustar el parámetro de **CELL_SIZE**. Por defecto, es de 40. Sin embargo, si hace falta, es recomendable ajustarlo a 30 de la siguiente forma
+
+```py
+# parameters.py
+CELL_SIZE = 30
+```
+
 ## Aspectos implementados 📝
 
 En la siguiente tabla se muestran los aspectos implementados según el **criterio de evaluación**. Por lo general se encuentran todos los aspectos implementados, a menos que haya algún detalle menor.

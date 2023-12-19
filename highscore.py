@@ -6,7 +6,7 @@ class HighScore:
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topright=(WINDOW_WIDTH - WINDOW_PADDING,
                                                     WINDOW_PADDING + SEQUENCE_HEIGHT))
-        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
+        self.font = pygame.font.Font(FONT_PATH, GAME_FONT_SIZE)
     
     def display_text(self, highest_score: str) -> None:
         x1 = self.surface.get_width() // 2

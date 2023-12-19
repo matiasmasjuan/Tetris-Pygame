@@ -5,7 +5,7 @@ class Score:
         self.surface = pygame.Surface((LEFT_SIDEBAR_WIDTH, SCORE_HEIGHT))
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topleft=(WINDOW_PADDING, WINDOW_PADDING))
-        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
+        self.font = pygame.font.Font(FONT_PATH, GAME_FONT_SIZE)
 
         self.level = 1
         self.score = 0
