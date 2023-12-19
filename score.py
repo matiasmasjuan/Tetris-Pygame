@@ -14,8 +14,8 @@ class Score:
 
     def write_text(self, x:int, y: int, text: str) -> None:
         text_surface = self.font.render(f'{text[0]}: {text[1]}', True, COLORS['TEXT'])
-        text_rext = text_surface.get_rect(center = (x, y))
-        self.surface.blit(text_surface, text_rext)
+        text_rect = text_surface.get_rect(center = (x, y))
+        self.surface.blit(text_surface, text_rect)
     
     def display_text(self) -> None:
         data = [(TEXTS['LEVEL'], self.level),

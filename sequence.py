@@ -2,7 +2,7 @@ from parameters import *
 
 class Sequence:
     def __init__(self) -> None:
-        self.surface = pygame.Surface((RIGHT_SIDEBAR_WIDTH, GAME_HEIGHT))
+        self.surface = pygame.Surface((RIGHT_SIDEBAR_WIDTH, SEQUENCE_HEIGHT))
         self.display_surface = pygame.display.get_surface()
         self.rect = self.surface.get_rect(topright=(WINDOW_WIDTH - WINDOW_PADDING, WINDOW_PADDING))
         self.font = pygame.font.Font(FONT_PATH, FONT_SIZE['M'])
@@ -33,8 +33,8 @@ class Sequence:
         x = self.surface.get_width() * 0.5
         y = self.surface.get_height() * 0.05
         text_surface = self.font.render(TEXTS['SEQUENCE'], True, COLORS['TEXT'])
-        text_rext = text_surface.get_rect(center = (x, y))
-        self.surface.blit(text_surface, text_rext)
+        text_rect = text_surface.get_rect(center = (x, y))
+        self.surface.blit(text_surface, text_rect)
 
     def run(self, next_shapes: list[str]) -> None:
         self.surface.fill(COLORS['SEQUENCE_BACKGROUND'])

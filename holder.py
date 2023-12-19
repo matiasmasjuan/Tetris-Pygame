@@ -32,8 +32,8 @@ class Holder:
         x = self.surface.get_width() * 0.5
         y = self.surface.get_height() * 0.15
         text_surface = self.font.render(TEXTS['HOLDER'], True, COLORS['TEXT'])
-        text_rext = text_surface.get_rect(center = (x, y))
-        self.surface.blit(text_surface, text_rext)
+        text_rect = text_surface.get_rect(center = (x, y))
+        self.surface.blit(text_surface, text_rect)
         
     def run(self, holded_piece: str | None) -> None:
         self.surface.fill(COLORS['HOLDER_BACKGROUND'])

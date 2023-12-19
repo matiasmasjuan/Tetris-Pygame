@@ -6,6 +6,7 @@ from game import Game
 from score import Score
 from holder import Holder
 from sequence import Sequence
+from highscore import HighScore
 
 class Tetris:
     def __init__(self) -> None:
@@ -16,10 +17,12 @@ class Tetris:
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
         self.holded_piece = None
+        self.highest_score = 0
 
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
+        self.highscore = HighScore()
         self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
 
         self.music = pygame.mixer.Sound(MUSIC_PATH)
@@ -79,11 +82,14 @@ class Tetris:
         self.current_shapes = self.generate_random_bag()
         self.next_shapes = self.get_next_shape()
         self.holded_piece = None
+        if self.score.score > self.highest_score:
+            self.highest_score = self.score.score
 
         self.game = Game(self.get_next_shape, self.update_score, self.game_over, self.update_hold_piece)
         self.score = Score()
         self.holder = Holder()
         self.sequence = Sequence()
+        self.highscore = HighScore()
 
         self.music.play(-1)
         self.run()
@@ -101,5 +107,6 @@ class Tetris:
             self.score.run()
             self.holder.run(self.holded_piece)
             self.sequence.run(self.current_shapes)
+            self.highscore.run(self.highest_score)
 
             pygame.display.update()
